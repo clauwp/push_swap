@@ -4,22 +4,24 @@
 #include <unistd.h>
 #include "libft.h"
 
+t_list	**g_stack_a;
+t_list	**g_stack_b;
+
 int	main(int argc, char **argv)
 {
-	t_list	*lst;
 	int	arr_len;
 	int	i;
 
 	if (argc < 2)
 		write(1, "Error", 5);
 	else if (argc == 2)
-		lst = make_lst_from_str(++argv);
+		make_lst_from_str(*(++argv));
 	else
-		lst = make_lst(argc, ++argv);
-	if (ft_lstsize(lst) <= 5)
-		sort_small(lst);
+		make_lst(argc, ++argv);
+	if (ft_lstsize(g_stack_a) <= 5)
+		sort_small(g_stack_a);
 	else
-		sort_big(lst);
+		sort_big(g_stack_a);
 }
 
 /*
@@ -28,34 +30,73 @@ to sort not more than 5 integers
 
 /*to sort more than 5 integers*/
 
-/*first node goes to the back of the list*/
-void	rotate(t_list **lst)
+/*form a doubly linked list from a string of numbers seperated by space*/
+void	make_lst_from_str(char *str)
 {
-	t_list	*new_first;
+	char	**str_arr;
+	int		*c_int;
 
-	new_first = (*lst)->next;
-	if (*lst != NULL)
+	if (has_error(str))
+		g_stack_a = NULL;
+	str_arr = ft_split(str,' ');
+	while (*str_arr != NULL)
 	{
-		ft_lstadd_back(lst, ft_lstnew((*lst)->content));
-		free(*lst);
-		*lst = new_first;
+		c_int = ps_atoi(*str_arr);
+		if (c_int == NULL)
+		{
+			ft_lstclear(g_stack_a);
+			g_stack_a = NULL;
+			break;
+		}
+		else
+			ft_lstadd_back(g_stack_a, ft_lstnew(c_int));
 	}
 }
 
-/*last node goes to the front of the list*/
-void	r_rotate(t_list **lst)
+/*checks if the arguments given are integers*/
+int	*ps_atoi(char *str)
 {
-	t_list	*new_first;
+	int	*ptr;
+	int	c_int;
 
-	new_first = ft_lstlast(*lst);
-	ft_lstadd_front(lst, ft_lstnew(new_first->content));
-	free(new_first);
+	c_int = ft_atoi(str);
+	ptr = &c_int;
+	if (ft_strncmp(ft_itoa(c_int), str, ft_strlen(str)) != 0)
+		return (NULL);
+	else
+		return (ptr);
 }
 
-void	push(int *src, int srclen, int *dst, int dstlen)
+/*checks if the argument string contains characters other than digits and spaces*/
+int	has_error(char *argv)
 {
-	int	*new_src;
-	int	*new_dst;
+	while (argv)
+	{
+		if (!ft_isdigit(*argv) || *argv != ' ')
+			return (1);
+		argv++;
+	}
+	return (0);
+}
 
-	
+/*form a doubly linked list from an array of strings*/
+void	make_lst(int argc, char **argv)
+{
+	int	*c_int;
+
+	argc--;
+	while(*argv)
+	{
+		if (has_error(*argv) || ps_atoi(*argv) == NULL)
+		{
+			ft_lstclear(g_stack_a);
+			g_stack_a = NULL;
+			break;
+		}
+		else
+		{
+			c_int = ps_atoi(*argv);
+			ft_lstadd_back(g_stack_a,ft_lstnew(c_int));
+		}
+	}
 }
