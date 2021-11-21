@@ -50,6 +50,7 @@ void	make_lst_from_str(char *str)
 		}
 		else
 			ft_lstadd_back(g_stack_a, ft_lstnew(c_int));
+		str_arr++;
 	}
 }
 
@@ -67,10 +68,13 @@ int	*ps_atoi(char *str)
 		return (ptr);
 }
 
-/*checks if the argument string contains characters other than digits and spaces*/
+/*
+checks if the argument string contains characters
+other than digits and spaces
+*/
 int	has_error(char *argv)
 {
-	while (argv)
+	while (*argv)
 	{
 		if (!ft_isdigit(*argv) || *argv != ' ')
 			return (1);
@@ -87,16 +91,14 @@ void	make_lst(int argc, char **argv)
 	argc--;
 	while(*argv)
 	{
-		if (has_error(*argv) || ps_atoi(*argv) == NULL)
+		c_int = ps_atoi(*argv);
+		if (has_error(*argv) || c_int == NULL)
 		{
 			ft_lstclear(g_stack_a);
 			g_stack_a = NULL;
 			break;
 		}
 		else
-		{
-			c_int = ps_atoi(*argv);
 			ft_lstadd_back(g_stack_a,ft_lstnew(c_int));
-		}
 	}
 }
