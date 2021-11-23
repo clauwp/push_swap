@@ -19,7 +19,7 @@ Finally, the pointer to the list must be set to NULL.
 #include "libft.h"
 #include <stdlib.h>
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	ft_lstclear(t_list **lst)
 {
 	t_list	*next_list;
 	t_list	*current_list;
@@ -28,7 +28,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	while (current_list)
 	{
 		next_list = current_list->next;
-		ft_lstdelone(current_list, del);
+		free(current_list);
 		current_list = next_list;
 	}
 	*lst = NULL;

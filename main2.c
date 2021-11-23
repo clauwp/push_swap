@@ -15,11 +15,12 @@ char    *test(char *str)
     *ptr_str = NULL;
 
 }
-int	main(int argc, char **argv)
+int	main(void)
 {
-    int a = 0;
-    int *ptr;
+    //int a = 0;
+    char *ptr;
 
-    ptr = &a;
+    ptr = NULL;
+    *ptr = 9;
     printf("%d\n",*ptr);
 }

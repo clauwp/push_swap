@@ -20,14 +20,14 @@ variable ’next’ is initialized to NULL.
 #include "libft.h"
 #include <stdlib.h>
 
-t_list	*ft_lstnew(void *content)
+t_list	*ft_lstnew(int n)
 {
 	t_list	*retlist;
 
 	retlist = (t_list *)malloc(sizeof(t_list));
 	if (retlist != NULL)
 	{
-		retlist->content = content;
+		retlist->num = n;
 		retlist->next = NULL;
 		return (retlist);
 	}
