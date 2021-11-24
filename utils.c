@@ -64,3 +64,9 @@ void	swap(t_list **lst)
 		c_next->next = c_top;
 	}
 }
+
+int	error(void)
+{
+	write(0, "Error", 5);
+	return (0);
+}
